@@ -325,6 +325,21 @@ function setDownload(link, name) {
   $("#mdl").setAttribute("download", name);
 }
 
+function showPan(lib) {
+  var cfg = window.PAN_LINKS || {};
+  var item = cfg[lib];
+  var b = $("#mPanBaidu"), q = $("#mPanQuark");
+  var has = !!(item && (item.baidu || item.quark));
+  $("#mpan").hidden = !has;
+  if (!has) return;
+  b.href = item.baidu || "#";
+  b.hidden = !item.baidu;
+  q.href = item.quark || "#";
+  q.hidden = !item.quark;
+  b.onclick = function () { trackEvent("ref_click", { source: "pan_baidu_" + lib }); };
+  q.onclick = function () { trackEvent("ref_click", { source: "pan_quark_" + lib }); };
+}
+
 function openFace(id) {
   curLib = "face"; cur = data("face").items.filter(function (x) { return x.id === id; })[0];
   if (!cur) return;
@@ -342,6 +357,7 @@ function openFace(id) {
   $("#mMode").hidden = true;
   $("#mdl").textContent = "下载原图（PNG 高清）";
   $("#mcopy").dataset.lib = "face";
+  showPan("face");
   showModal();
 }
 
@@ -412,6 +428,7 @@ function openPose(key, angle) {
   });
   paintPoseImage(base, depthUrl);
   $("#mcopy").dataset.lib = "pose";
+  showPan("pose");
   showModal();
 }
 
@@ -430,6 +447,7 @@ function openCostume(id) {
   $("#mMode").hidden = true;
   $("#mdl").textContent = "下载原图（PNG · 长边约 2048）";
   $("#mcopy").dataset.lib = "costume";
+  showPan("costume");
   showModal();
 }
 

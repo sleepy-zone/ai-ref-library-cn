@@ -45,3 +45,13 @@ window.ANALYTICS = {
     // { provider: "baidu", id: "你的百度统计 id" }
   ]
 };
+
+/**
+ * 整库原图的网盘（可选）。留空字符串 = 不显示该入口。
+ * 想换推广链接，直接改这里，不用动 app.js。
+ */
+window.PAN_LINKS = {
+  face:    { baidu: "https://pan.baidu.com/s/1rxqVp0qkxCQf-8Z8DXI6HA?pwd=jR2P", quark: "https://pan.quark.cn/s/469084c4f0fa" },
+  pose:    { baidu: "https://pan.baidu.com/s/1rY8E88d19xabnoBGhex4zg?pwd=vsf6", quark: "https://pan.quark.cn/s/6b1004add615" },
+  costume: { baidu: "https://pan.baidu.com/s/1bsGuveiCBRbucS-17tpTrg?pwd=s39e", quark: "https://pan.quark.cn/s/492b9782ab78" }
+};
