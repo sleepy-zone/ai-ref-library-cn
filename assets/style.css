@@ -218,3 +218,8 @@ footer{min-height:150px}
 .pan a{border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:#3a3a42;font-size:11.5px}
 .pan a:hover{border-color:#c9c9d2;color:#111}
 .pan[hidden],.pan a[hidden]{display:none!important}
+
+
+/* ---------- 姊妹站互链 ---------- */
+.links .btn.xlink{border-color:#d7d7e2;background:linear-gradient(180deg,#fff,#f6f6fb);font-weight:600}
+.links .btn.xlink:hover{border-color:#b9b9c9;background:linear-gradient(180deg,#fff,#eeeef7)}
