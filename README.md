@@ -1,6 +1,6 @@
 # AI 作图素材库 · 中文版（脸 / 姿势 / 服装）
 
-<img width="2764" height="1858" alt="Image" src="https://github.com/user-attachments/assets/0184a8eb-48fe-4d26-8237-9dc65813843f" />
+<img width="2404" height="1728" alt="Image" src="https://github.com/user-attachments/assets/6a53ac45-4c89-48fd-a7b4-2e6788a5294a" />
 
 基于 **あぎ / ギア（[@giaaibusi](https://x.com/giaaibusi)）** 公开的三套 AI 作图参考素材的中文版网站。
 
@@ -23,8 +23,6 @@
 - [免责](#免责)
 
 ## 随机组合
-
-<img width="2606" height="1730" alt="Image" src="https://github.com/user-attachments/assets/a25be79a-2150-4615-9e29-cb1634d5b72d" />
 
 点顶部 **🎲 随机组合**：从脸库、服装库、姿势库各随机抽一条，三张参考图并排，并自动生成现成的提示词。
 
