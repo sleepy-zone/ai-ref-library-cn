@@ -933,7 +933,7 @@ function renderCombo() {
 }
 
 /* ---------- 主切换 ---------- */
-function switchLib(lib) {
+function switchLib(lib, opts) {
   S.lib = lib; S.q = "";
   trackEvent("lib_view", { lib: lib });
   document.querySelectorAll(".nav button").forEach(function (b) {
@@ -944,7 +944,9 @@ function switchLib(lib) {
     $("#grid").className = "grid";
     $("#grid").innerHTML = "";
     loadAll().then(function () {
-      if (!COMBO.face) comboAll(); else renderCombo();
+      if (!COMBO.face) comboAll();
+      else if (opts && opts.reroll) comboAll();   // 点导航「随机组合」= 重新抽一组
+      else renderCombo();
     }).catch(function (err) {
       $("#toolbar").innerHTML = '<div class="empty">' + esc(err.message) + "</div>";
     });
@@ -959,7 +961,9 @@ function switchLib(lib) {
 }
 
 document.querySelectorAll(".nav button").forEach(function (b) {
-  b.onclick = function () { switchLib(b.dataset.lib); };
+  b.onclick = function () {
+    switchLib(b.dataset.lib, { reroll: b.dataset.lib === "combo" });
+  };
 });
 function randomOpen() {
   if (S.lib === "combo") { if (COMBO.face) comboAll(); return; }
