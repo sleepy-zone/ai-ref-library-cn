@@ -241,3 +241,9 @@ footer{min-height:150px}
 .pantop-links a:hover{border-color:#c9c9d2;color:#111;background:#fafafa}
 .pantop-note{margin:10px 0 0;font-size:11px;color:#9a9aa4;line-height:1.5}
 @media (max-width:720px){.pantop-panel{width:min(320px,88vw);left:auto;right:0}}
+
+/* ---------- 姊妹站入口（顶部） ---------- */
+.sister{align-self:center;margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid #dcd8f0;background:linear-gradient(180deg,#fff,#f7f5ff);border-radius:999px;padding:7px 15px;font-size:13px;color:#4a3f7a;font-weight:600;transition:border-color .15s,box-shadow .15s,transform .15s}
+.sister i{font-style:normal;font-size:10.5px;font-weight:400;color:#8c86a8;background:#f1eefc;border-radius:5px;padding:1px 6px}
+.sister:hover{border-color:#beb6e6;transform:translateY(-1px);box-shadow:0 3px 10px rgba(120,100,200,.14);color:#3b3163}
+@media (max-width:900px){.sister{margin-left:0}}

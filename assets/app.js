@@ -1065,5 +1065,11 @@ document.querySelectorAll("#refModeSeg button").forEach(function (b) {
 });
 syncModeUI();
 
+/* ---------- 姊妹站点击埋点 ---------- */
+(function () {
+  var link = document.getElementById("sisterLink");
+  if (link) link.addEventListener("click", function () { trackEvent("ref_click", { source: "sister_top" }); });
+})();
+
 switchLib("combo");
 })();
