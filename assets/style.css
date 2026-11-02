@@ -118,8 +118,8 @@ h1 span{font-size:12.5px;font-weight:400;color:var(--muted);letter-spacing:0;whi
 .pantop-note{margin:10px 0 0;font-size:11px;color:var(--muted-soft);line-height:1.55}
 
 .grat{position:relative;display:inline-flex}
-.grat-trigger{background:var(--accent);border-color:var(--accent);color:var(--on-primary);font-weight:500}
-.grat-trigger:hover{background:var(--accent-active);border-color:var(--accent-active);color:var(--on-primary)}
+.grat-trigger{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.grat-trigger:hover{border-color:var(--line-strong)}
 .grat-panel{
   display:none;position:absolute;right:0;top:calc(100% + 8px);z-index:70;width:236px;
   background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r-lg);padding:16px;text-align:center;
