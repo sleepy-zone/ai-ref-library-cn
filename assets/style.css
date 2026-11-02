@@ -223,3 +223,21 @@ footer{min-height:150px}
 /* ---------- 姊妹站互链 ---------- */
 .links .btn.xlink{border-color:#d7d7e2;background:linear-gradient(180deg,#fff,#f6f6fb);font-weight:600}
 .links .btn.xlink:hover{border-color:#b9b9c9;background:linear-gradient(180deg,#fff,#eeeef7)}
+
+/* ---------- 顶部整库下载 ---------- */
+.pantop{position:relative;align-self:center}
+.pantop-trigger{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 15px;font-size:13px;color:#3a3a42;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.pantop-trigger:hover{border-color:#c9c9d2;color:#111;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.pantop-panel{display:none;position:absolute;left:0;top:calc(100% + 10px);z-index:70;width:320px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px;box-shadow:0 18px 44px rgba(0,0,0,.16)}
+.pantop-panel::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
+.pantop:hover .pantop-panel,.pantop.open .pantop-panel{display:block}
+.pantop-hd{font-size:12.5px;font-weight:600;color:#1b1b1f;margin-bottom:10px}
+.pantop-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid #f2f2f4}
+.pantop-row:first-of-type{border-top:0}
+.pantop-name{font-size:12.5px;color:#3a3a42;display:flex;align-items:baseline;gap:6px}
+.pantop-name em{font-style:normal;font-size:11px;color:#9a9aa4}
+.pantop-links{display:flex;gap:6px}
+.pantop-links a{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:#3a3a42;white-space:nowrap}
+.pantop-links a:hover{border-color:#c9c9d2;color:#111;background:#fafafa}
+.pantop-note{margin:10px 0 0;font-size:11px;color:#9a9aa4;line-height:1.5}
+@media (max-width:720px){.pantop-panel{width:min(320px,88vw);left:auto;right:0}}
