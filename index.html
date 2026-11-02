@@ -4,44 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI 作图素材库 · 中文版（脸 / 姿势 / 服装）</title>
-<link rel="stylesheet" href="assets/style.css?v=27">
+<link rel="stylesheet" href="assets/style.css?v=28">
 </head>
 <body>
 <header><div class="wrap">
   <div class="head-row">
     <h1>AI 作图素材库<span>脸 1,499 · 姿势 288 个 / 1,439 张 · 服装 1,407 套</span></h1>
-    <div class="tips-hover" id="tipsHover">
-      <button class="tips-trigger" id="tipsTrigger" aria-expanded="false" aria-controls="tipsPanel">怎么用 + 授权</button>
-    <div class="tips-panel" id="tipsPanel" role="dialog" aria-label="使用说明与授权">
-    <ul>
-      <li><b>流程</b>：脸库里挑一张定住「她是谁」→ 姿势库挑动作 → 服装库挑这套衣服 → 把三张参考图 + 一句指令交给模型。</li>
-      <li><b>懒得挑</b>：默认打开的就是「🎲 随机组合」：一次抽齐脸 / 服装 / 姿势，自动生成中英文提示词（含三张图的源站链接），复制就能交给别的 Agent。</li>
-      <li><b>指令示例</b>：把图1中人物的姿势改成图2的姿势，衣服换成图3这套；保持脸、发型、体型、光线和画风不变。弹窗里有「复制作图指令」，会自动带上编号和分类。</li>
-      <li><b>为什么给图不给文字</b>：姿势和服装用文字描述必然飘（同一句话每次出来的褶数、长度、肢体角度都不一样），参考图才是稳定的。</li>
-      <li><b>授权（重要）</b>：脸库是 <b>CC0</b>，可自由使用与再分发；姿势库、服装库是「可商用 / 可修改 / 可参考，但<b>禁止再分发图片本体</b>」。</li>
-      <li><b>本仓库只含缩略图</b>：点「下载原图」会跳转到作者源站的对应文件（新标签打开后另存即可）。请勿把原图再打包分发。</li>
-    </ul>
+    <div class="head-actions">
+      <div class="tips-hover" id="tipsHover">
+        <button class="tips-trigger" id="tipsTrigger" aria-expanded="false" aria-controls="tipsPanel"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.5 5 8.5 4.5 6 4.5H3v13h3c2.5 0 4.5.5 6 2 1.5-1.5 3.5-2 6-2h3v-13h-3c-2.5 0-4.5.5-6 2Z"/><path d="M12 6.5v13"/></svg>怎么用 + 授权</button>
+        <div class="tips-panel" id="tipsPanel" role="dialog" aria-label="使用说明与授权">
+          <ul>
+            <li><b>流程</b>：脸库里挑一张定住「她是谁」→ 姿势库挑动作 → 服装库挑这套衣服 → 把三张参考图 + 一句指令交给模型。</li>
+            <li><b>懒得挑</b>：默认打开的就是「随机组合」：一次抽齐脸 / 服装 / 姿势，自动生成中英文提示词（含三张图的源站链接），复制就能交给别的 Agent。</li>
+            <li><b>指令示例</b>：把图1中人物的姿势改成图2的姿势，衣服换成图3这套；保持脸、发型、体型、光线和画风不变。弹窗里有「复制作图指令」，会自动带上编号和分类。</li>
+            <li><b>为什么给图不给文字</b>：姿势和服装用文字描述必然飘（同一句话每次出来的褶数、长度、肢体角度都不一样），参考图才是稳定的。</li>
+            <li><b>授权（重要）</b>：脸库是 <b>CC0</b>，可自由使用与再分发；姿势库、服装库是「可商用 / 可修改 / 可参考，但<b>禁止再分发图片本体</b>」。</li>
+            <li><b>本仓库只含缩略图</b>：点「下载原图」会跳转到作者源站的对应文件（新标签打开后另存即可）。请勿把原图再打包分发。</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="pantop" id="panHover">
-      <button class="pantop-trigger" id="panTrigger" aria-expanded="false" aria-controls="panPanel">📦 整库下载</button>
-      <div class="pantop-panel" id="panPanel" role="dialog" aria-label="整库原图下载">
-        <div class="pantop-hd">整库原图（网盘）</div>
-        <div id="panRows"></div>
-        <p class="pantop-note">整库打包，适合批量取图；只要单张请点开条目用「下载原图」。</p>
+      <div class="pantop" id="panHover">
+        <button class="pantop-trigger" id="panTrigger" aria-expanded="false" aria-controls="panPanel"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>整库下载</button>
+        <div class="pantop-panel" id="panPanel" role="dialog" aria-label="整库原图下载">
+          <div class="pantop-hd">整库原图（网盘）</div>
+          <div id="panRows"></div>
+          <p class="pantop-note">整库打包，适合批量取图；只要单张请点开条目用「下载原图」。</p>
+        </div>
       </div>
-    </div>
-    <a class="sister" id="sisterLink" href="https://sleepyzone.online/char-db-cn/" target="_blank" rel="noopener">🎨 二次元换装库<i>姊妹站</i></a>
-    <div class="grat" id="gratHover">
-      <button class="grat-trigger" id="gratTrigger" aria-expanded="false" aria-controls="gratPanel">☕ 赞赏</button>
-      <div class="grat-panel" id="gratPanel" role="dialog" aria-label="赞赏支持">
-        <a class="grat-qr" href="assets/tip.jpg" target="_blank" rel="noopener" title="点开看完整赞赏卡">
-          <img src="assets/tip-qr.jpg" alt="赞赏码" width="188" height="188" loading="lazy">
-        </a>
-        <div class="grat-txt">
-          <b>微信扫码赞赏</b>
-          <span>如果这个库帮你省了时间，可以请我喝杯咖啡</span>
-          <em>完全自愿 · 不影响任何功能</em>
+      <a class="sister" id="sisterLink" href="https://sleepyzone.online/char-db-cn/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.4"/><path d="m21 15-5-5L5 20"/></svg>二次元换装库</a>
+      <div class="grat" id="gratHover">
+        <button class="grat-trigger" id="gratTrigger" aria-expanded="false" aria-controls="gratPanel"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 5c0 .8-.8 1.2-.8 2M12 5c0 .8-.8 1.2-.8 2"/></svg>赞赏</button>
+        <div class="grat-panel" id="gratPanel" role="dialog" aria-label="赞赏支持">
+          <a class="grat-qr" href="assets/tip.jpg" target="_blank" rel="noopener" title="点开看完整赞赏卡">
+            <img src="assets/tip-qr.jpg" alt="赞赏码" width="188" height="188" loading="lazy">
+          </a>
+          <div class="grat-txt">
+            <b>微信扫码赞赏</b>
+            <span>如果这个库帮你省了时间，可以请我喝杯咖啡</span>
+            <em>完全自愿 · 不影响任何功能</em>
+          </div>
         </div>
       </div>
     </div>
@@ -50,7 +52,7 @@
     <button data-lib="face">脸库<b>1,499</b><i>张</i></button>
     <button data-lib="pose">姿势库<b>288</b><i>个姿势 / 1,439 张</i></button>
     <button data-lib="costume">服装库<b>1,407</b><i>套</i></button>
-    <button data-lib="combo">🎲 随机组合<i>一次抽齐脸 / 服装 / 姿势</i></button>
+    <button data-lib="combo"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 13 11"/><path d="M8 21H3v-5"/><path d="M3 21l8-8"/><path d="M21 16v5h-5"/><path d="m21 21-4-4"/><path d="M3 8V3h5"/><path d="m3 3 4 4"/></svg>随机组合<i>一次抽齐脸 / 服装 / 姿势</i></button>
     <div class="refmode" id="refModeSeg" role="group" aria-label="参考图形式">
       <span class="refmode-label">参考图</span>
       <button data-mode="line" class="on" aria-pressed="true">线稿</button>
@@ -108,6 +110,6 @@
 
 <script src="config.js"></script>
 <script src="assets/analytics.js?v=27"></script>
-<script src="assets/app.js?v=27"></script>
+<script src="assets/app.js?v=28"></script>
 </body>
 </html>

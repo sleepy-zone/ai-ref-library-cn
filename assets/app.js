@@ -75,7 +75,7 @@ function faceCard(it) {
   var sec = data("face").sections[it.s].name;
   return '<article class="card" data-id="' + it.id + '">'
     + '<div class="ph r45"><img loading="lazy" decoding="async" src="' + thumb("face", it.id) + '" alt="' + it.id + '">'
-    + '<div class="badge">' + it.id + "</div>" + (it.hot ? '<div class="fire" title="下载榜 Top10">🔥</div>' : "") + "</div>"
+    + '<div class="badge">' + it.id + "</div>" + (it.hot ? '<div class="fire" title="下载榜 Top10"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 5 5.5 5 9a5 5 0 0 1-10 0c0-2 .8-3.2 2-4.5"/></svg></div>' : "") + "</div>"
     + '<div class="meta"><div class="tags"><span class="cat">' + esc(sec) + "</span>" + (hair ? '<span class="tag">' + esc(hair) + "</span>" : "") + "</div>"
     + (it.sz ? '<p class="en">' + esc(it.sz) + "</p>" : "") + "</div></article>";
 }
@@ -157,7 +157,7 @@ function toolbarFace() {
   });
   $("#toolbar").innerHTML = '<div class="tabs">' + all + "</div>"
     + '<div class="row"><input id="q" type="search" placeholder="搜索：编号 / 造型（蝴蝶剪、狼尾、空气刘海）" autocomplete="off">'
-    + '<div class="seg" id="hairseg">' + hair + '</div><button class="rndbtn" id="rnd2">🎲 随机一张</button><span id="count"></span></div>';
+    + '<div class="seg" id="hairseg">' + hair + '</div><button class="rndbtn" id="rnd2"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 13 11"/><path d="M8 21H3v-5"/><path d="M3 21l8-8"/><path d="M21 16v5h-5"/><path d="m21 21-4-4"/><path d="M3 8V3h5"/><path d="m3 3 4 4"/></svg>随机一张</button><span id="count"></span></div>';
   $("#toolbar").querySelectorAll("[data-sec]").forEach(function (b) {
     b.onclick = function () { S.face.sec = +b.dataset.sec; S.q = ""; trackEvent("filter", { lib: "face", type: "section", value: b.dataset.sec }); render(); };
   });
@@ -187,7 +187,7 @@ function toolbarPose() {
     + '<div class="row"><input id="q" type="search" placeholder="搜索：中文名 / 日文名 / 编号（如 比心、P023、站立）" autocomplete="off">'
     + sel + '<div class="seg" id="angseg">' + angHTML + "</div>"
     + '<div class="seg" id="viewseg"><button data-view="pose"' + (S.pose.view === "pose" ? ' class="on"' : '') + '>按姿势</button><button data-view="one"' + (S.pose.view === "one" ? ' class="on"' : '') + '>按单张</button></div>' 
-    + '<button class="rndbtn" id="rnd2">🎲 随机一张</button><span id="count"></span></div>';
+    + '<button class="rndbtn" id="rnd2"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 13 11"/><path d="M8 21H3v-5"/><path d="M3 21l8-8"/><path d="M21 16v5h-5"/><path d="m21 21-4-4"/><path d="M3 8V3h5"/><path d="m3 3 4 4"/></svg>随机一张</button><span id="count"></span></div>';
   $("#toolbar").querySelectorAll("[data-series]").forEach(function (b) {
     b.onclick = function () { S.pose.series = +b.dataset.series; S.pose.cat = ""; trackEvent("filter", { lib: "pose", type: "series", value: b.dataset.series }); render(); };
   });
@@ -209,7 +209,7 @@ function toolbarCostume() {
     all += '<button class="tab' + (S.costume.cat === i ? " on" : "") + '" data-cat="' + i + '">' + esc(c.name) + "<b>" + c.n + "</b></button>";
   });
   $("#toolbar").innerHTML = '<div class="tabs">' + all + "</div>"
-    + '<div class="row"><input id="q" type="search" placeholder="搜索：编号 / 中文（牛仔、蕾丝）/ 英文（denim、lace）" autocomplete="off"><button class="rndbtn" id="rnd2">🎲 随机一张</button><span id="count"></span></div>';
+    + '<div class="row"><input id="q" type="search" placeholder="搜索：编号 / 中文（牛仔、蕾丝）/ 英文（denim、lace）" autocomplete="off"><button class="rndbtn" id="rnd2"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 13 11"/><path d="M8 21H3v-5"/><path d="M3 21l8-8"/><path d="M21 16v5h-5"/><path d="m21 21-4-4"/><path d="M3 8V3h5"/><path d="m3 3 4 4"/></svg>随机一张</button><span id="count"></span></div>';
   $("#toolbar").querySelectorAll("[data-cat]").forEach(function (b) {
     b.onclick = function () { S.costume.cat = +b.dataset.cat; trackEvent("filter", { lib: "costume", type: "cat", value: b.dataset.cat }); render(); };
   });
@@ -867,9 +867,9 @@ function renderCombo() {
     return '<option value="' + i + '"' + (COMBO.costumeCat === i ? " selected" : "") + ">" + esc(c.name) + "</option>";
   }).join("");
   $("#toolbar").innerHTML = '<div class="row">'
-    + '<span class="prompt-hint" style="margin:0 4px 0 0">姿势范围</span><select id="poseRange">' + poseOpts + "</select>"
-    + '<span class="prompt-hint" style="margin:0 4px 0 8px">服装范围</span><select id="costRange">' + costOpts + "</select>"
-    + '<button id="rerollAll" style="border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px">🎲 全部换一组</button>'
+    + '<span class="filter-label">姿势范围</span><select id="poseRange">' + poseOpts + "</select>"
+    + '<span class="filter-label">服装范围</span><select id="costRange">' + costOpts + "</select>"
+    + '<button class="rndbtn" id="rerollAll"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 13 11"/><path d="M8 21H3v-5"/><path d="M3 21l8-8"/><path d="M21 16v5h-5"/><path d="m21 21-4-4"/><path d="M3 8V3h5"/><path d="m3 3 4 4"/></svg>全部换一组</button>'
     + '<span id="count"></span></div>';
   $("#poseRange").onchange = function (e) { COMBO.poseSeries = +e.target.value; comboReroll("pose"); };
   $("#costRange").onchange = function (e) { COMBO.costumeCat = +e.target.value; comboReroll("costume"); };
@@ -878,7 +878,7 @@ function renderCombo() {
 
   var x = comboParts();
   function slot(lib, title, base, desc, ratio, src) {
-    return '<div class="slot"><div class="slot-h"><span>' + title + '</span><button data-reroll="' + lib + '">🔄 换一个</button></div>'
+    return '<div class="slot"><div class="slot-h"><span>' + title + '</span><button data-reroll="' + lib + '"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>换一个</button></div>'
       + '<div class="ph ' + ratio + '" data-open="' + lib + '"><img loading="lazy" src="' + (src || thumb(lib, base)) + '" alt="">'
       + '<div class="badge">' + base + "</div></div>"
       + '<div class="slot-m"><b>' + esc(desc) + "</b></div></div>";
