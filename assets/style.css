@@ -294,3 +294,21 @@ footer b{color:var(--ink);font-weight:600}
 .fire .ico{width:12px;height:12px;color:var(--accent)}
 .rndbtn .ico{width:13px;height:13px;color:var(--muted)}
 .slot-h button .ico{width:12px;height:12px;color:var(--muted)}
+
+/* ---------- 大列表：只渲染视口内卡片 ---------- */
+body.big-grid .card{content-visibility:auto;contain-intrinsic-size:auto 360px}
+
+/* 「显示更多」按钮，占满一行 */
+.more-btn{
+  grid-column:1/-1;justify-self:center;margin:6px 0 4px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  border-radius:var(--r-md);padding:10px 22px;font-size:13px;font-weight:500;
+}
+.more-btn:hover{border-color:var(--ink)}
+
+/* 轻提示 */
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+  background:rgba(38,37,30,.92);color:#fff;padding:10px 16px;border-radius:10px;
+  font-size:13px;z-index:120;pointer-events:none;
+}
