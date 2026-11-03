@@ -158,7 +158,8 @@ select:focus{border-color:var(--ink);outline:none}
 .rndbtn:hover{border-color:var(--line-strong)}
 
 /* ---------- gallery ---------- */
-main{padding:26px 0 56px;min-height:62vh}
+/* min-height 兜住首屏：数据是异步插入的，预留高度可避免内容到位时把页脚顶进视口（CLS） */
+main{padding:26px 0 56px;min-height:calc(100vh - 200px)}
 .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 .grid.pose{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 .grid.face{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}

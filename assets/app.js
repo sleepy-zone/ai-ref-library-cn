@@ -14,17 +14,17 @@ function trackSearch() {
 
 var LIB = {
   face: {
-    key: "face", name: "脸库", file: "data/face.js", g: "LIB_FACE", total: 1499, unit: "张",
+    key: "face", name: "脸库", file: "data/face.js", g: "LIB_FACE", total: 1499, unit: "张", size: "0.2",
     site: "https://ai-portrait-gallery.pages.dev/",
     remote: function (base) { return "https://ai-portrait-gallery.pages.dev/img/full/" + base + ".png"; }
   },
   pose: {
-    key: "pose", name: "姿势库", file: "data/pose.js", g: "LIB_POSE", total: 288, unit: "个姿势",
+    key: "pose", name: "姿势库", file: "data/pose.js", g: "LIB_POSE", total: 288, unit: "个姿势", size: "0.17",
     site: "https://ai-pose-gallery.pages.dev/",
     remote: function (base) { return "https://ai-pose-gallery.pages.dev/img/" + base + ".png"; }
   },
   costume: {
-    key: "costume", name: "服装库", file: "data/costume.js", g: "LIB_COSTUME", total: 1407, unit: "套",
+    key: "costume", name: "服装库", file: "data/costume.js", g: "LIB_COSTUME", total: 1407, unit: "套", size: "0.3",
     site: "https://ai-costume-gallery.pages.dev/",
     remote: function (base) { return "https://ai-costume-gallery.pages.dev/png/" + base + ".png"; }
   }
@@ -51,6 +51,18 @@ function data(lib) { return cache[lib].data; }
 function imgMap(lib) { return cache[lib].img; }
 function thumb(lib, base) { return imgMap(lib)[base] || ""; }
 
+/* 首屏前 n 张图改成 eager，第一张抬到 high 优先级：
+   全部 loading="lazy" 连视口内的图也降级，LCP 会被拖到 2.5s 以上 */
+function eagerFirst(container, n) {
+  if (!container) return;
+  var imgs = container.querySelectorAll("img");
+  for (var i = 0; i < Math.min(n, imgs.length); i++) {
+    imgs[i].loading = "eager";
+    imgs[i].decoding = "async";
+  }
+  if (imgs[0]) imgs[0].setAttribute("fetchpriority", "high");
+}
+
 function loadLib(lib) {
   if (cache[lib]) return Promise.resolve(cache[lib]);
   return new Promise(function (resolve, reject) {
@@ -64,7 +76,7 @@ function loadLib(lib) {
     };
     s.onerror = function () { reject(new Error("无法加载 " + LIB[lib].file)); };
     document.head.appendChild(s);
-    $("#toolbar").innerHTML = '<div class="loading">正在载入' + LIB[lib].name + "（约 15 MB，首次打开需要几秒）…</div>";
+    $("#toolbar").innerHTML = '<div class="loading">正在载入' + LIB[lib].name + "（约 " + (LIB[lib].size || "0.2") + " MB）…</div>";
     $("#grid").innerHTML = "";
   });
 }
@@ -230,12 +242,10 @@ function render(gridOnly) {
   else renderCostume();
 }
 
+/* 同时覆盖普通网格卡片和「随机组合」的三个 slot（默认落地页就是 combo，
+   以前只匹配 #grid .card img，导致 combo 首屏三张图一直是 lazy）*/
 function optimizeFirstScreen() {
-  var imgs = document.querySelectorAll("#grid .card img");
-  for (var i = 0; i < imgs.length && i < 10; i++) {
-    imgs[i].loading = "eager";
-    imgs[i].setAttribute("fetchpriority", "high");
-  }
+  eagerFirst(document.getElementById("grid"), 8);
 }
 
 function renderFace() {
@@ -911,6 +921,7 @@ function renderCombo() {
   $("#grid").className = "combo";
   $("#grid").innerHTML = html;
   $("#promptText").value = promptZh();
+  optimizeFirstScreen();
 
   $("#grid").querySelectorAll("[data-reroll]").forEach(function (b) {
     b.onclick = function () { comboReroll(b.dataset.reroll); };
@@ -940,7 +951,7 @@ function switchLib(lib, opts) {
     b.classList.toggle("on", b.dataset.lib === lib);
   });
   if (lib === "combo") {
-    $("#toolbar").innerHTML = '<div class="loading">正在载入三套素材（约 18 MB，首次需要几秒）…</div>';
+    $("#toolbar").innerHTML = '<div class="loading">正在载入三套素材（约 0.7 MB，首次约 1–3 秒）…</div>';
     $("#grid").className = "grid";
     $("#grid").innerHTML = "";
     loadAll().then(function () {
