@@ -159,7 +159,7 @@ select:focus{border-color:var(--ink);outline:none}
 
 /* ---------- gallery ---------- */
 /* min-height 兜住首屏：数据是异步插入的，预留高度可避免内容到位时把页脚顶进视口（CLS） */
-main{padding:26px 0 56px;min-height:calc(100vh - 200px)}
+main{padding:26px 0 56px;min-height:calc(100vh - 200px);min-height:calc(100svh - 200px)}  /* 用 svh：移动端地址栏收起时 vh 会变，min-height 跟着变会造成 CLS */
 .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 .grid.pose{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 .grid.face{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
@@ -296,7 +296,6 @@ footer b{color:var(--ink);font-weight:600}
 .slot-h button .ico{width:12px;height:12px;color:var(--muted)}
 
 /* ---------- 大列表：只渲染视口内卡片 ---------- */
-body.big-grid .card{content-visibility:auto;contain-intrinsic-size:auto 360px}
 
 /* 「显示更多」按钮，占满一行 */
 .more-btn{

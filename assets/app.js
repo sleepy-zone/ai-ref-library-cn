@@ -277,7 +277,6 @@ function optimizeFirstScreen() {
 
 /* 大列表分页渲染：一次最多画 PER_PAGE 张，剩下的用「显示更多」追加，避免每次筛选都重建上千个节点 */
 function appendMore(total, painted, redraw, unit) {
-  document.body.classList.toggle("big-grid", painted > 120);
   if (painted >= total) return;
   var b = document.createElement("button");
   b.className = "more-btn";
