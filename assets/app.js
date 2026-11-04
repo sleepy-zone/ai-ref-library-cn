@@ -390,8 +390,8 @@ function showPan(lib) {
   b.hidden = !item.baidu;
   q.href = item.quark || "#";
   q.hidden = !item.quark;
-  b.onclick = function () { trackEvent("ref_click", { source: "pan_baidu_" + lib }); };
-  q.onclick = function () { trackEvent("ref_click", { source: "pan_quark_" + lib }); };
+  /* 网盘等外链的点击不再自己埋点：Clarity 自带「出站点击」，
+     在 Android 内置浏览器里手动埋点曾触发 Maximum call stack（2026-11-03 录制） */
 }
 
 function openFace(id) {
@@ -1127,9 +1127,6 @@ function renderPanTop() {
   var box = document.getElementById("panRows");
   if (!box) return;
   box.innerHTML = html || '<p class="pantop-note">暂无网盘链接</p>';
-  box.querySelectorAll("[data-pan]").forEach(function (a) {
-    a.onclick = function () { trackEvent("ref_click", { source: "pan_top_" + a.dataset.pan }); };
-  });
 }
 
 renderPanTop();
@@ -1139,7 +1136,7 @@ document.querySelectorAll("#refModeSeg button").forEach(function (b) {
 });
 syncModeUI();
 
-/* ---------- 姊妹站点击埋点 ---------- */
+/* ---------- 姊妹站点击埋点（同域，Clarity 的「出站点击」抓不到，保留手动埋点） ---------- */
 (function () {
   var link = document.getElementById("sisterLink");
   if (link) link.addEventListener("click", function () { trackEvent("ref_click", { source: "sister_top" }); });
