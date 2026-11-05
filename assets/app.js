@@ -574,6 +574,10 @@ function fallbackCopy(txt, done, fail) {
 }
 
 document.addEventListener("keydown", function (e) {
+  if (PICK.which) {
+    if (e.key === "Escape") { e.preventDefault(); closePicker(); }
+    return;
+  }
   if (!$("#modal").classList.contains("on")) return;
   if (e.key === "Escape") hideModal();
   else if (e.key === "ArrowLeft") { e.preventDefault(); if (curLib === "pose") stepAngle(-1); else stepModal(-1); }
@@ -585,6 +589,9 @@ document.addEventListener("keydown", function (e) {
 /* ---------- 随机组合 ---------- */
 var COMBO = { face: null, costume: null, pose: null, poseSeries: -1, costumeCat: -1 };
 var COMBO_ANGLE = "正面";
+/* 自选面板状态：which=face/costume/pose，其余为面板自己的筛选条件 */
+var PICK = { which: null, q: "", sec: -1, hair: -1, series: -1, cat: -1, ang: "正面", limit: 60, timer: null };
+var PICK_PAGE = 60, PICK_STEP = 120;
 var NL = String.fromCharCode(10);
 var EN = {
   sec: { "脸部特写": "face close-up", "造型": "styled portrait" },
@@ -607,15 +614,23 @@ function poolCostume() {
 function comboReroll(which) {
   if (which === "face") COMBO.face = pick(data("face").items);
   else if (which === "costume") COMBO.costume = pick(poolCostume());
-  else COMBO.pose = pick(poolPose());
+  else { COMBO.pose = pick(poolPose()); syncPoseAngle(); }
   trackEvent("combo_reroll", { target: which, face: COMBO.face.id, costume: COMBO.costume.id, pose: COMBO.pose.id });
   renderCombo();
+}
+/* 有一个姿势没有「仰视」机位：换到它时把机位退回该姿势有的，避免提示词和参考图对不上 */
+function syncPoseAngle() {
+  if (!COMBO.pose) return;
+  if (!COMBO.pose.ang[COMBO_ANGLE]) {
+    COMBO_ANGLE = COMBO.pose.ang["正面"] ? "正面" : Object.keys(COMBO.pose.ang)[0];
+  }
 }
 /* reason: "init" = 进页面自动抽一组（基线），"user" = 用户点「全部换一组」 */
 function comboAll(reason) {
   COMBO.face = pick(data("face").items);
   COMBO.costume = pick(poolCostume());
   COMBO.pose = pick(poolPose());
+  syncPoseAngle();
   trackEvent(reason === "init" ? "combo_init" : "combo_reroll", {
     target: "all",
     face: COMBO.face.id,
@@ -929,11 +944,15 @@ function renderCombo() {
   $("#poseRange").onchange = function (e) { COMBO.poseSeries = +e.target.value; comboReroll("pose"); };
   $("#costRange").onchange = function (e) { COMBO.costumeCat = +e.target.value; comboReroll("costume"); };
   $("#rerollAll").onclick = function () { comboAll("user"); };
-  $("#count").textContent = "已随机一组 · 每格可单独换";
+  $("#count").textContent = "每格可「自选」或「换一个」";
 
   var x = comboParts();
   function slot(lib, title, base, desc, ratio, src) {
-    return '<div class="slot"><div class="slot-h"><span>' + title + '</span><button data-reroll="' + lib + '"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>换一个</button></div>'
+    var libName = lib === "face" ? "脸库" : lib === "pose" ? "姿势库" : "服装库";
+    return '<div class="slot"><div class="slot-h"><span>' + title + '</span><div class="slot-acts">'
+      + '<button data-pick="' + lib + '" title="从' + libName + '里挑一张"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>自选</button>'
+      + '<button data-reroll="' + lib + '" title="随机换一张"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>换一个</button>'
+      + '</div></div>'
       + '<div class="ph ' + ratio + '" data-open="' + lib + '"><img loading="lazy" src="' + (src || thumb(lib, base)) + '" alt="">'
       + '<div class="badge">' + base + "</div></div>"
       + '<div class="slot-m"><b>' + esc(desc) + "</b></div></div>";
@@ -988,6 +1007,9 @@ function renderCombo() {
   $("#grid").querySelectorAll("[data-reroll]").forEach(function (b) {
     b.onclick = function () { comboReroll(b.dataset.reroll); };
   });
+  $("#grid").querySelectorAll("[data-pick]").forEach(function (b) {
+    b.onclick = function () { openPicker(b.dataset.pick); };
+  });
   $("#grid").querySelectorAll("[data-open]").forEach(function (el) {
     el.onclick = function () {
       if (el.dataset.open === "face") openFace(COMBO.face.id);
@@ -1005,8 +1027,206 @@ function renderCombo() {
   if ($("#sheetCopy")) $("#sheetCopy").onclick = function () { copySheet(this); };
 }
 
+/* ---------- 自选：从库里挑一个，而不是随机 ---------- */
+function pickerCurrent() {
+  if (PICK.which === "face" && COMBO.face) return COMBO.face.id;
+  if (PICK.which === "costume" && COMBO.costume) return COMBO.costume.id;
+  if (PICK.which === "pose" && COMBO.pose) return COMBO.pose.id + " · " + COMBO_ANGLE;
+  return "—";
+}
+
+function pickerBar() {
+  var w = PICK.which, d = data(w), tabs = "", extra = "", ph = "";
+  if (w === "face") {
+    ph = "搜索：编号 / 造型 / 发长";
+    tabs += '<button data-psec="-1"' + (PICK.sec < 0 ? ' class="on"' : "") + ">全部<b>" + d.items.length + "</b></button>";
+    d.sections.forEach(function (s, i) {
+      tabs += '<button data-psec="' + i + '"' + (PICK.sec === i ? ' class="on"' : "") + ">" + esc(s.name) + "<b>" + s.n + "</b></button>";
+    });
+    extra = '<select id="pickerHair" aria-label="按发长筛选"><option value="-1">全部发长</option>' + d.hairs.map(function (h, i) {
+      return '<option value="' + i + '"' + (PICK.hair === i ? " selected" : "") + ">" + esc(h.name) + "</option>";
+    }).join("") + "</select>";
+  } else if (w === "pose") {
+    ph = "搜索：中文名 / 日文名 / 编号";
+    tabs += '<button data-pse="-1"' + (PICK.series < 0 ? ' class="on"' : "") + ">全部<b>" + d.poses.length + "</b></button>";
+    d.series.forEach(function (s, i) {
+      tabs += '<button data-pse="' + i + '"' + (PICK.series === i ? ' class="on"' : "") + ">" + esc(s.name) + "<b>" + s.n + "</b></button>";
+    });
+    extra = '<select id="pickerAngle" aria-label="姿势机位">' + ["正面", "俯视", "仰视", "侧面", "斜45°"].map(function (a) {
+      return '<option value="' + esc(a) + '"' + (PICK.ang === a ? " selected" : "") + ">机位：" + esc(a) + "</option>";
+    }).join("") + "</select>";
+  } else {
+    ph = "搜索：编号 / 中文 / 英文";
+    tabs += '<button data-pcat="-1"' + (PICK.cat < 0 ? ' class="on"' : "") + ">全部<b>" + d.items.length + "</b></button>";
+    d.cats.forEach(function (c, i) {
+      tabs += '<button data-pcat="' + i + '"' + (PICK.cat === i ? ' class="on"' : "") + ">" + esc(c.name) + "<b>" + c.n + "</b></button>";
+    });
+  }
+  $("#pickerBar").innerHTML = '<input id="pickerQ" type="search" placeholder="' + ph + '" autocomplete="off" value="' + esc(PICK.q) + '">' + extra
+    + '<div class="picker-tabs" id="pickerTabs">' + tabs + "</div>";
+
+  $("#pickerQ").oninput = function (e) {
+    var v = e.target.value.trim();
+    clearTimeout(PICK.timer);
+    PICK.timer = setTimeout(function () { PICK.q = v; PICK.limit = PICK_PAGE; renderPicker(); }, 160);
+  };
+  $("#pickerTabs").querySelectorAll("[data-psec]").forEach(function (b) {
+    b.onclick = function () { PICK.q = $("#pickerQ").value.trim(); clearTimeout(PICK.timer); PICK.sec = +b.dataset.psec; PICK.limit = PICK_PAGE; renderPicker(); };
+  });
+  $("#pickerTabs").querySelectorAll("[data-pse]").forEach(function (b) {
+    b.onclick = function () { PICK.q = $("#pickerQ").value.trim(); clearTimeout(PICK.timer); PICK.series = +b.dataset.pse; PICK.limit = PICK_PAGE; renderPicker(); };
+  });
+  $("#pickerTabs").querySelectorAll("[data-pcat]").forEach(function (b) {
+    b.onclick = function () { PICK.q = $("#pickerQ").value.trim(); clearTimeout(PICK.timer); PICK.cat = +b.dataset.pcat; PICK.limit = PICK_PAGE; renderPicker(); };
+  });
+  if ($("#pickerHair")) $("#pickerHair").onchange = function (e) { PICK.hair = +e.target.value; PICK.limit = PICK_PAGE; renderPicker(); };
+  if ($("#pickerAngle")) $("#pickerAngle").onchange = function (e) { PICK.ang = e.target.value; renderPicker(); };
+}
+
+function pickerList() {
+  var w = PICK.which, d = data(w), q = PICK.q.toLowerCase();
+  function hit(s) { return !q || s.toLowerCase().indexOf(q) >= 0; }
+  if (w === "face") {
+    return d.items.filter(function (it) {
+      if (PICK.sec >= 0 && it.s !== PICK.sec) return false;
+      if (PICK.hair >= 0 && it.h !== PICK.hair) return false;
+      return hit(it.id + " " + d.sections[it.s].name + " " + (it.sz || "") + " " + (it.sj || "") + " " + (it.h >= 0 ? d.hairs[it.h].name : ""));
+    });
+  }
+  if (w === "pose") {
+    return d.poses.filter(function (p) {
+      if (PICK.series >= 0 && p.s !== PICK.series) return false;
+      return hit(p.zh + " " + p.ja + " " + p.id + " " + p.cat + " " + d.series[p.s].name);
+    });
+  }
+  return d.items.filter(function (it) {
+    if (PICK.cat >= 0 && it.c !== PICK.cat) return false;
+    return hit(it.id + " " + d.cats[it.c].name + " " + it.kw.join(" ") + " " + it.zh.join(" "));
+  });
+}
+
+function pickerCard(w, it) {
+  var on = w === "face" ? (COMBO.face && COMBO.face.id === it.id)
+    : w === "pose" ? (COMBO.pose && COMBO.pose.key === it.key)
+      : (COMBO.costume && COMBO.costume.id === it.id);
+  var key = w === "pose" ? it.key : it.id;
+  var img, id, title, sub;
+  if (w === "face") {
+    var fd = data("face");
+    img = thumb("face", it.id); id = it.id;
+    title = fd.sections[it.s].name + (it.h >= 0 ? " · " + fd.hairs[it.h].name : "");
+    sub = it.sz || "";
+  } else if (w === "pose") {
+    var ang = it.ang[PICK.ang] ? PICK.ang : (it.ang["正面"] ? "正面" : Object.keys(it.ang)[0]);
+    img = thumb("pose", it.ang[ang]); id = it.id + (ang !== PICK.ang ? " · " + ang : "");
+    title = it.zh; sub = data("pose").series[it.s].name + " · " + it.cat;
+  } else {
+    var cd = data("costume");
+    img = thumb("costume", it.id); id = it.id;
+    title = cd.cats[it.c].name + " · " + it.zh.slice(0, 2).join(" ");
+    sub = it.kw.slice(0, 4).join(" · ");
+  }
+  return '<button type="button" class="pk' + (on ? " on" : "") + '" data-pk="' + esc(key) + '" aria-pressed="' + (on ? "true" : "false") + '">'
+    + '<span class="pk-ph"><img loading="lazy" decoding="async" src="' + img + '" alt="">'
+    + '<span class="pk-id">' + esc(id) + "</span>" + (on ? '<span class="pk-check">✓</span>' : "") + "</span>"
+    + '<span class="pk-m"><b>' + esc(title) + "</b>" + (sub ? "<em>" + esc(sub) + "</em>" : "") + "</span></button>";
+}
+
+function renderPicker() {
+  if (!PICK.which) return;
+  var w = PICK.which, list = pickerList();
+  var shown = Math.min(PICK.limit, list.length);
+  var grid = $("#pickerGrid");
+  grid.className = "picker-grid pick-" + w;
+  grid.innerHTML = list.length
+    ? list.slice(0, shown).map(function (it) { return pickerCard(w, it); }).join("")
+    : '<div class="picker-empty">没有匹配的条目，换个关键词试试</div>';
+  $("#pickerCount").textContent = list.length + (w === "pose" ? " 个姿势" : w === "costume" ? " 套" : " 张");
+  $("#pickerHint").textContent = "当前：" + pickerCurrent() + " · 点任意一张替换";
+  var more = $("#pickerMore");
+  more.hidden = shown >= list.length;
+  more.textContent = "显示更多（还有 " + (list.length - shown) + " 项）";
+  eagerFirst(grid, 12);
+  $("#pickerScroll").scrollTop = 0;
+}
+
+function pickerMore() {
+  if (!PICK.which) return;
+  var list = pickerList();
+  var start = Math.min(PICK.limit, list.length);
+  PICK.limit += PICK_STEP;
+  var end = Math.min(PICK.limit, list.length);
+  if (start < end) {
+    var grid = $("#pickerGrid");
+    if (grid.querySelector(".picker-empty")) grid.innerHTML = "";
+    grid.insertAdjacentHTML("beforeend", list.slice(start, end).map(function (it) { return pickerCard(PICK.which, it); }).join(""));
+  }
+  var more = $("#pickerMore");
+  more.hidden = end >= list.length;
+  more.textContent = "显示更多（还有 " + (list.length - end) + " 项）";
+}
+
+function openPicker(which) {
+  if (!cache[which]) return;
+  clearTimeout(PICK.timer);
+  PICK.which = which;
+  PICK.q = ""; PICK.sec = -1; PICK.hair = -1; PICK.series = -1; PICK.cat = -1;
+  PICK.ang = COMBO_ANGLE;
+  PICK.limit = PICK_PAGE;
+  var titles = { face: "自选一张脸", costume: "自选一套服装", pose: "自选一个姿势" };
+  $("#pickerTitle").textContent = titles[which];
+  $("#picker").hidden = false;
+  document.body.classList.add("picker-open");
+  pickerBar();
+  renderPicker();
+  trackEvent("combo_picker", { target: which, action: "open" });
+  /* 触屏设备不自动聚焦，避免一开面板就弹键盘挡住图 */
+  if (window.matchMedia && window.matchMedia("(pointer: fine)").matches) {
+    setTimeout(function () { if (PICK.which) $("#pickerQ").focus(); }, 60);
+  }
+}
+
+function closePicker() {
+  if (!PICK.which) return;
+  var w = PICK.which;
+  clearTimeout(PICK.timer);
+  if (document.activeElement && $("#picker").contains(document.activeElement)) document.activeElement.blur();
+  $("#picker").hidden = true;
+  document.body.classList.remove("picker-open");
+  PICK.which = null;
+  trackEvent("combo_picker", { target: w, action: "close" });
+}
+
+function pickerChoose(key) {
+  if (!PICK.which) return;
+  var w = PICK.which, d = data(w), it;
+  if (w === "face") it = d.items.filter(function (x) { return x.id === key; })[0];
+  else if (w === "pose") it = d.poses.filter(function (x) { return x.key === key; })[0];
+  else it = d.items.filter(function (x) { return x.id === key; })[0];
+  if (!it) return;
+  if (w === "face") COMBO.face = it;
+  else if (w === "costume") COMBO.costume = it;
+  else {
+    var ang = it.ang[PICK.ang] ? PICK.ang : (it.ang["正面"] ? "正面" : Object.keys(it.ang)[0]);
+    COMBO.pose = it;
+    COMBO_ANGLE = ang;
+  }
+  trackEvent("combo_pick", { target: w, id: it.id, source: "picker" });
+  closePicker();
+  renderCombo();
+  flash("已换成 " + it.id);
+}
+
+$("#pickerClose").onclick = closePicker;
+$("#picker").onclick = function (e) { if (e.target.id === "picker") closePicker(); };
+$("#pickerMore").onclick = pickerMore;
+$("#pickerGrid").onclick = function (e) {
+  var b = e.target.closest ? e.target.closest(".pk") : null;
+  if (b && PICK.which) pickerChoose(b.dataset.pk);
+};
+
 /* ---------- 主切换 ---------- */
-function switchLib(lib, opts) {
+function switchLib(lib) {
   S.lib = lib; S.q = "";
   SHOWN = PER_PAGE;
   trackEvent("lib_view", { lib: lib });
@@ -1018,8 +1238,8 @@ function switchLib(lib, opts) {
     $("#grid").className = "grid";
     $("#grid").innerHTML = "";
     loadAll().then(function () {
+      /* 有手动选过的组合就保留，回来自选/看库不丢；要重抽点「全部换一组」 */
       if (!COMBO.face) comboAll("init");
-      else if (opts && opts.reroll) comboAll("user");   // 点导航「随机组合」= 重新抽一组
       else renderCombo();
     }).catch(function (err) {
       $("#toolbar").innerHTML = '<div class="empty">' + esc(err.message) + "</div>";
@@ -1036,7 +1256,7 @@ function switchLib(lib, opts) {
 
 document.querySelectorAll(".nav button").forEach(function (b) {
   b.onclick = function () {
-    switchLib(b.dataset.lib, { reroll: b.dataset.lib === "combo" });
+    switchLib(b.dataset.lib);
   };
 });
 function randomOpen() {

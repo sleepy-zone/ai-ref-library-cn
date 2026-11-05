@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI 作图素材库 · 中文版（脸 / 姿势 / 服装）</title>
-<link rel="stylesheet" href="assets/style.css?v=32">
+<link rel="stylesheet" href="assets/style.css?v=33">
 </head>
 <body>
 <header><div class="wrap">
@@ -17,6 +17,7 @@
           <ul>
             <li><b>流程</b>：脸库里挑一张定住「她是谁」→ 姿势库挑动作 → 服装库挑这套衣服 → 把三张参考图 + 一句指令交给模型。</li>
             <li><b>懒得挑</b>：默认打开的就是「随机组合」：一次抽齐脸 / 服装 / 姿势，自动生成中英文提示词（含三张图的源站链接），复制就能交给别的 Agent。</li>
+            <li><b>想指定</b>：每格点「自选」打开对应的库，按分类 / 搜索 / 机位挑一张，选中即刻替换；「换一个」仍是随机，两者可混用。</li>
             <li><b>指令示例</b>：把图1中人物的姿势改成图2的姿势，衣服换成图3这套；保持脸、发型、体型、光线和画风不变。弹窗里有「复制作图指令」，会自动带上编号和分类。</li>
             <li><b>为什么给图不给文字</b>：姿势和服装用文字描述必然飘（同一句话每次出来的褶数、长度、肢体角度都不一样），参考图才是稳定的。</li>
             <li><b>本仓库只含缩略图</b>：点「下载原图」会跳转到作者源站的对应文件（新标签打开后另存即可）。请勿把原图再打包分发。</li>
@@ -77,6 +78,24 @@
   <b>授权</b>：脸库 CC0；姿势库 / 服装库可免费商用与修改，但禁止再分发图片本体，禁止用于真人、未成年或违背公序良俗的用途。素材按原样提供，无担保。
 </div></footer>
 
+<div class="picker" id="picker" hidden>
+  <div class="picker-box" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+    <div class="picker-h">
+      <div class="picker-ht">
+        <h2 id="pickerTitle">自选</h2>
+        <p id="pickerHint">点任意一张替换当前这一格</p>
+      </div>
+      <span class="picker-count" id="pickerCount"></span>
+      <button class="close" id="pickerClose" aria-label="关闭" title="关闭（Esc）">×</button>
+    </div>
+    <div class="picker-bar" id="pickerBar"></div>
+    <div class="picker-scroll" id="pickerScroll">
+      <div class="picker-grid" id="pickerGrid"></div>
+      <button class="more-btn" id="pickerMore" hidden>显示更多</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="modal">
   <div class="mbox">
     <div class="mimg">
@@ -109,6 +128,6 @@
 
 <script src="config.js"></script>
 <script src="assets/analytics.js?v=27"></script>
-<script src="assets/app.js?v=33"></script>
+<script src="assets/app.js?v=34"></script>
 </body>
 </html>
