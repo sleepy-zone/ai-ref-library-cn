@@ -133,7 +133,8 @@ h1 span{font-size:12.5px;font-weight:400;color:var(--muted);letter-spacing:0;whi
 .grat-txt em{display:block;margin-top:8px;font-size:11px;color:var(--muted-soft);font-style:normal}
 
 /* ---------- toolbar ---------- */
-.tools:has(#toolbar:empty){display:none}
+/* 工具条常驻占位：它是异步填入的，若出现时再撑开会把整页内容往下推 */
+.tools .wrap{min-height:38px}
 .tools{position:sticky;top:0;z-index:20;background:rgba(247,247,244,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 0}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .tab{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:6px 12px;font-size:12.5px;font-weight:500;color:var(--ink);transition:border-color .15s,background .15s,color .15s}
@@ -159,7 +160,9 @@ select:focus{border-color:var(--ink);outline:none}
 
 /* ---------- gallery ---------- */
 /* min-height 兜住首屏：数据是异步插入的，预留高度可避免内容到位时把页脚顶进视口（CLS） */
-main{padding:26px 0 56px;min-height:calc(100vh - 200px);min-height:calc(100svh - 200px)}  /* 用 svh：移动端地址栏收起时 vh 会变，min-height 跟着变会造成 CLS */
+/* 首屏高度用固定 px 预留：视口单位（vh/svh）在移动端会随地址栏变化，反而制造 CLS */
+main{padding:26px 0 56px;min-height:520px}
+@media (min-width:900px){main{min-height:760px}}
 .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 .grid.pose{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
 .grid.face{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
