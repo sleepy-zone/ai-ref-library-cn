@@ -382,14 +382,14 @@ function setDownload(link, name) {
 function showPan(lib) {
   var cfg = window.PAN_LINKS || {};
   var item = cfg[lib];
-  var b = $("#mPanBaidu"), q = $("#mPanQuark");
-  var has = !!(item && (item.baidu || item.quark));
+  var b = $("#mPanBaidu"), x = $("#mPanXunlei");
+  var has = !!(item && (item.baidu || item.xunlei));
   $("#mpan").hidden = !has;
   if (!has) return;
   b.href = item.baidu || "#";
   b.hidden = !item.baidu;
-  q.href = item.quark || "#";
-  q.hidden = !item.quark;
+  x.href = item.xunlei || "#";
+  x.hidden = !item.xunlei;
   /* 网盘等外链的点击不再自己埋点：Clarity 自带「出站点击」，
      在 Android 内置浏览器里手动埋点曾触发 Maximum call stack（2026-11-03 录制） */
 }
@@ -1340,7 +1340,7 @@ function renderPanTop() {
     var item = cfg[d.key] || {};
     var links = "";
     if (item.baidu) links += '<a href="' + item.baidu + '" target="_blank" rel="sponsored noopener" data-pan="' + d.key + '_baidu">百度网盘</a>';
-    if (item.quark) links += '<a href="' + item.quark + '" target="_blank" rel="sponsored noopener" data-pan="' + d.key + '_quark">夸克</a>';
+    if (item.xunlei) links += '<a href="' + item.xunlei + '" target="_blank" rel="sponsored noopener" data-pan="' + d.key + '_xunlei">迅雷网盘</a>';
     if (!links) return "";
     return '<div class="pantop-row"><span class="pantop-name">' + d.name + '<em>' + d.count + '</em></span><span class="pantop-links">' + links + "</span></div>";
   }).join("");
@@ -1363,14 +1363,15 @@ syncModeUI();
 })();
 
 /* ---------- 网盘点击专用埋点 ----------
-   Clarity 自带的「出站点击」是聚合事件，分不出百度/夸克，也没法只统计网盘。
+   Clarity 自带的「出站点击」是聚合事件，分不出百度/迅雷，也没法只统计网盘。
    用事件委托（一个监听器、capture 阶段），不挂在具体链接上，避免之前那种点击链路问题。 */
 document.addEventListener(
   "click",
   function (e) {
-    var a = e.target && e.target.closest ? e.target.closest('a[href*="pan.baidu.com"], a[href*="pan.quark.cn"]') : null;
+    var a = e.target && e.target.closest ? e.target.closest('a[href*="pan.baidu.com"], a[href*="pan.xunlei.com"]') : null;
     if (!a) return;
-    var dest = a.getAttribute("href").indexOf("pan.baidu.com") >= 0 ? "pan_baidu" : "pan_quark";
+    var href = a.getAttribute("href");
+    var dest = href.indexOf("pan.baidu.com") >= 0 ? "pan_baidu" : "pan_xunlei";
     trackEvent(dest, { href: (a.getAttribute("href") || "").slice(0, 60) });
   },
   true

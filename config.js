@@ -51,7 +51,7 @@ window.ANALYTICS = {
  * 想换推广链接，直接改这里，不用动 app.js。
  */
 window.PAN_LINKS = {
-  face:    { baidu: "https://pan.baidu.com/s/1rxqVp0qkxCQf-8Z8DXI6HA?pwd=jR2P", quark: "https://pan.quark.cn/s/469084c4f0fa" },
-  pose:    { baidu: "https://pan.baidu.com/s/1rY8E88d19xabnoBGhex4zg?pwd=vsf6", quark: "https://pan.quark.cn/s/6b1004add615" },
-  costume: { baidu: "https://pan.baidu.com/s/1bsGuveiCBRbucS-17tpTrg?pwd=s39e", quark: "https://pan.quark.cn/s/492b9782ab78" }
+  face:    { xunlei: "https://pan.xunlei.com/s/VP6tg2ruaifqyrnzz5lzBdnKA1?pwd=ewt6" },
+  pose:    { baidu: "https://pan.baidu.com/s/1rY8E88d19xabnoBGhex4zg?pwd=vsf6" },
+  costume: { xunlei: "https://pan.xunlei.com/s/VP6tgFmWnWfCg0Xll2VhG9I5A1?pwd=4ch7" }
 };

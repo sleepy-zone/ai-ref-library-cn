@@ -53,19 +53,13 @@
 
 **AI 作图脸库**
 
-[https://pan.baidu.com/s/1rxqVp0qkxCQf-8Z8DXI6HA?pwd=jR2P](https://pan.baidu.com/s/1rxqVp0qkxCQf-8Z8DXI6HA?pwd=jR2P)
-
-[https://pan.quark.cn/s/469084c4f0fa](https://pan.quark.cn/s/469084c4f0fa)
+[https://pan.xunlei.com/s/VP6tg2ruaifqyrnzz5lzBdnKA1?pwd=ewt6](https://pan.xunlei.com/s/VP6tg2ruaifqyrnzz5lzBdnKA1?pwd=ewt6)
 
 **AI 服装库**
 
-[https://pan.baidu.com/s/1bsGuveiCBRbucS-17tpTrg?pwd=s39e](https://pan.baidu.com/s/1bsGuveiCBRbucS-17tpTrg?pwd=s39e)
-
-[https://pan.quark.cn/s/492b9782ab78](https://pan.quark.cn/s/492b9782ab78)
+[https://pan.xunlei.com/s/VP6tgFmWnWfCg0Xll2VhG9I5A1?pwd=4ch7](https://pan.xunlei.com/s/VP6tgFmWnWfCg0Xll2VhG9I5A1?pwd=4ch7)
 
 **AI 作图姿势库**
-
-[https://pan.quark.cn/s/6b1004add615](https://pan.quark.cn/s/6b1004add615)
 
 [https://pan.baidu.com/s/1rY8E88d19xabnoBGhex4zg?pwd=vsf6](https://pan.baidu.com/s/1rY8E88d19xabnoBGhex4zg?pwd=vsf6)
 
