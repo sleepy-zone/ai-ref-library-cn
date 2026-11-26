@@ -12,6 +12,17 @@
 
 **在线访问**：<https://sleepyzone.online/ai-ref-library-cn/>
 
+## 其他站点
+
+同一个站点下的其他 AI 绘图素材入口：
+
+- [Sleepy Zone](https://sleepyzone.online/)：项目与资源总入口
+- [二次元角色换装库](https://sleepyzone.online/char-db-cn/)：发型 / 服装 / 姿势 / 组装
+- [服装提示词库 · ChiHAL 精选](https://sleepyzone.online/outfit-db-cn/)：29 套原创服装与可复制提示词
+- [Tag Atlas · AI 绘图标签图鉴](https://sleepyzone.online/ai-tag-atlas/)：中英标签、场景灯光配方与现成提示词
+- [Mio 设计档案](https://sleepyzone.online/mio-design-archive/)：九宫格姿势 / 服装 / 发型设计档案
+- [表情包素材库](https://sleepyzone.online/sticker-library-cn/)：26 套贴纸 / 表情包风格参考
+
 ## 目录
 
 - [随机组合](#随机组合)：一次抽齐脸 / 服装 / 姿势，并生成提示词
