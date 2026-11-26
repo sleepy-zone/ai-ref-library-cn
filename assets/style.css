@@ -370,3 +370,14 @@ footer b{color:var(--ink);font-weight:600}
   background:rgba(38,37,30,.92);color:#fff;padding:10px 16px;border-radius:10px;
   font-size:13px;z-index:120;pointer-events:none;
 }
+
+/* mini game promo */
+.game-wrap{padding:0 0 8px}
+.game-promo{display:flex;align-items:center;gap:22px;margin:28px 0 0;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r-lg,12px)}
+.game-qr{width:104px;height:104px;flex:none;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:10px}
+.game-copy{min-width:0}
+.game-kicker{margin:0 0 5px;font-family:var(--mono,monospace);font-size:9.5px;letter-spacing:.12em;color:var(--accent);font-weight:600}
+.game-title{margin:0 0 6px;font-size:20px;line-height:1.2;color:var(--ink)}
+.game-desc{margin:0;font-size:12.5px;line-height:1.7;color:var(--body)}
+.game-hint{margin:8px 0 0;font-size:11.5px;color:var(--muted)}
+@media(max-width:600px){.game-promo{flex-direction:column;align-items:flex-start;gap:12px;padding:14px}.game-qr{width:82px;height:82px}.game-title{font-size:18px}}
