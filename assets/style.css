@@ -388,3 +388,15 @@ footer b{color:var(--ink);font-weight:600}
 .qwen-tip-badge{display:inline-flex;align-items:center;height:15px;padding:0 4px;border-radius:3px;background:var(--accent);color:#fff;font-family:var(--mono,monospace);font-size:8px;font-weight:700;letter-spacing:.04em}
 .qwen-tip-arrow{color:var(--accent);font-size:12px}
 @media(max-width:600px){.qwen-tip{white-space:normal}}
+
+/* qwen top-right CTA */
+.qwen-top{position:relative;display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 10px;margin-right:4px;border:1px solid var(--line-strong);border-radius:var(--r-md,8px);background:var(--surface);color:var(--ink);font-size:12px;font-weight:600;line-height:1;text-decoration:none;white-space:nowrap;flex:none;transition:border-color .15s,color .15s,background .15s}
+.qwen-top:hover{border-color:var(--accent);color:var(--accent)}
+.qwen-top-hot{position:absolute;top:-7px;right:-6px;display:inline-flex;align-items:center;height:15px;padding:0 4px;border-radius:3px;background:var(--accent);color:#fff;font-family:var(--mono,monospace);font-size:8px;font-weight:700;letter-spacing:.04em;line-height:1;box-shadow:0 0 0 2px var(--canvas);pointer-events:none}
+.qwen-top-short{display:none}
+@media(max-width:720px){.qwen-top-full{display:none}.qwen-top-short{display:inline}}
+
+@media(max-width:720px){
+  header{position:relative}
+  .qwen-top{position:absolute;top:14px;right:16px;margin:0}
+}
