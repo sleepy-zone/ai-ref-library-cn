@@ -976,6 +976,7 @@ function renderCombo() {
       ? '<button id="copyUrls">复制取图命令</button>'
       : '<button class="primary" id="sheetSave">下载三联图</button><button id="sheetCopy">复制三联图</button>')
     + "</div></div>"
+    + '<a class="qwen-tip" href="https://qwenwork.cn/download?utm_source=rentuibang&amp;utm_content=banner452" target="_blank" rel="sponsored nofollow noopener"><span class="qwen-tip-badge">推荐</span>复制后直接去千问办公生成<span class="qwen-tip-arrow" aria-hidden="true">↗</span></a>'
     + '<textarea id="promptText" readonly></textarea>'
     + '<div class="prompt-links"><span>原图：</span>'
     + '<a href="' + x.urls.face + '" target="_blank" rel="noopener">脸</a>'

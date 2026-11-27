@@ -381,3 +381,10 @@ footer b{color:var(--ink);font-weight:600}
 .game-desc{margin:0;font-size:12.5px;line-height:1.7;color:var(--body)}
 .game-hint{margin:8px 0 0;font-size:11.5px;color:var(--muted)}
 @media(max-width:600px){.game-promo{flex-direction:column;align-items:flex-start;gap:12px;padding:14px}.game-qr{width:82px;height:82px}.game-title{font-size:18px}}
+
+/* qwen generation tip */
+.qwen-tip{display:inline-flex;align-items:center;gap:6px;margin:8px 0 0;padding:4px 9px;border:1px solid var(--line);border-radius:999px;background:var(--canvas-soft,#fafaf7);color:var(--body,#5a5852);font-size:11.5px;line-height:1.5;text-decoration:none;transition:border-color .15s,color .15s,background .15s;white-space:nowrap}
+.qwen-tip:hover{border-color:var(--accent);color:var(--ink);background:var(--surface,#fff)}
+.qwen-tip-badge{display:inline-flex;align-items:center;height:15px;padding:0 4px;border-radius:3px;background:var(--accent);color:#fff;font-family:var(--mono,monospace);font-size:8px;font-weight:700;letter-spacing:.04em}
+.qwen-tip-arrow{color:var(--accent);font-size:12px}
+@media(max-width:600px){.qwen-tip{white-space:normal}}
